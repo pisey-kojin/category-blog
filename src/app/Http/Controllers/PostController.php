@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ImageUploadService;
+use App\Constants\PaginationConstants;
 
 class PostController extends Controller
 {
@@ -43,10 +44,13 @@ class PostController extends Controller
             $currentCategory = Category::find(request('category'));
         }
 
-        // withQueryString()で２ページ目に移動する時にも、フィルタを維持できる
-        $posts = $query->latest()->paginate(9)->withQueryString();
-
         $categories = Category::withCount('posts')->get();
+
+        // withQueryString()で２ページ目に移動する時にも、フィルタを維持できる
+        $posts = $query
+            ->latest()
+            ->paginate(PaginationConstants::POSTS_PER_PAGE)
+            ->withQueryString();
 
         return view('posts.index', compact('posts', 'categories', 'currentCategory'));
     }

@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Constants\ImageConstants;
 
 class ImageUploadService
 {
@@ -17,7 +18,7 @@ class ImageUploadService
      * 
      * @return string
      */
-    public function upload(UploadedFile $image, string $directory = 'posts'): string
+    public function upload(UploadedFile $image, string $directory = ImageConstants::DIRECTORY_POSTS): string
     {
         // 1. ファイル名を生成（ユニックにする）
         $filename = $this->generateFileName($image);
@@ -75,10 +76,14 @@ class ImageUploadService
         $img = $manager->read($image);
 
         // 幅1200px、高さは自動調整（アスペクト比維持）
-        $img->resize(1200, null, function ($contstraint) {
-            $contstraint->aspectRatio(); // アスペクト比を維持
-            $contstraint->upsize(); // 元画像より大きくしない
-        });
+        $img->resize(
+            ImageConstants::MAX_WIDTH,
+            ImageConstants::MAX_HEIGHT,
+            function ($contstraint) {
+                $contstraint->aspectRatio(); // アスペクト比を維持
+                $contstraint->upsize(); // 元画像より大きくしない
+            }
+        );
 
         return $img;
     }
