@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Constants\ImageConstants;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -25,7 +26,12 @@ class StorePostRequest extends FormRequest
             'title' => 'required|max:100',
             'body' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // 2MB max        
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:' . ImageConstants::ALLOWED_MIMES_STRING,
+                'max:' . ImageConstants::MAX_SIZE_KB
+            ]
         ];
     }
 
@@ -38,8 +44,8 @@ class StorePostRequest extends FormRequest
             'category_id.required' => 'カテゴリを選択してください',
             'category_id.exists' => '選択されたカテゴリは存在しません',
             'image.image' => '画像ファイルをアップロードしてください',
-            'image.mimes' => '画像形式はjpeg,png,jpg,gifのみです',
-            'image.max' => '画像サイズは2MB以内です'
+            'image.mimes' => '画像形式は' . ImageConstants::ALLOWED_MIMES_STRING . 'のみです',
+            'image.max' => '画像サイズは' . ImageConstants::MAX_SIZE_KB . '以内です'
         ];
     }
 }
