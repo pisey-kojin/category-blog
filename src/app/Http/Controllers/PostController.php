@@ -8,6 +8,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Services\ImageUploadService;
 use App\Constants\PaginationConstants;
 
@@ -29,30 +30,28 @@ class PostController extends Controller
     /**
      * 記事一覧表示
      */
-    public function index()
+    public function index(Request $request)
     {
+
         /**
          * カテゴリでフィルタする
          */
-        $query = Post::with(['user', 'category'])
-            ->withCount('likes');
-
-        // カテゴリフィルタ
-        $currentCategory = null;
-        if (request('category')) {
-            $query->where('category_id', request('category'));
-            $currentCategory = Category::find(request('category'));
-        }
-
-        $categories = Category::withCount('posts')->get();
-
-        // withQueryString()で２ページ目に移動する時にも、フィルタを維持できる
-        $posts = $query
+        $posts = POST::with('user', 'category')
+            ->withCount('likes')
+            ->filterByCategory($request->category) // モデル内のクエリスコープを呼び出す
+            ->search($request->keyword) // // モデル内のクエリスコープを呼び出す
             ->latest()
             ->paginate(PaginationConstants::POSTS_PER_PAGE)
             ->withQueryString();
 
-        return view('posts.index', compact('posts', 'categories', 'currentCategory'));
+        $categories = Category::withCount('posts')->get();
+
+        $filters = [
+            'category' => $request->category,
+            'keyword' => $request->keyword,
+        ];
+
+        return view('posts.index', compact('posts', 'categories', 'filters'));
     }
 
     /**

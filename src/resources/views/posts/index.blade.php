@@ -48,10 +48,10 @@
             
         </div>
         <div class="pt-2 mt-2">
-            @if ($currentCategory)
-                <div class="mb-4 text-sm text-gray-600">
-                    「{{ $currentCategory->name }}」の記事を表示中
-                    <a href="{{ route('posts.index')}}" class="text-blue-500 hover:underline ml-2">
+            @if ($filters['keyword'])
+                <div class="mb-4">
+                    「{{ $filters['keyword'] }}」の検索結果
+                    <a href="{{ route('posts.index', ['category' => $filters['category']])}}" class="text-blue-500">
                         クリア
                     </a>
                 </div>
