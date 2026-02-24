@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,11 @@ Route::middleware('auth')->group(function () {
 
     // いいね機能用のルート（後で使う）
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 });
 
 // 認証なし
