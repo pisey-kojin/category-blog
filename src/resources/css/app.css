@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ボタンの状態管理 */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 文字数カウンター */
+.text-counter-warning {
+    color: #f59e0b;
+}
+
+.text-counter-danger {
+    color: #ef4444;
+}
+
+
+
+
+/* 編集中のハイライト */
+.comment-item.editing {
+    background-color: #fef3c7;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
+}
