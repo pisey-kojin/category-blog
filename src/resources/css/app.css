@@ -17,9 +17,6 @@ button:disabled {
     color: #ef4444;
 }
 
-
-
-
 /* 編集中のハイライト */
 .comment-item.editing {
     background-color: #fef3c7;
