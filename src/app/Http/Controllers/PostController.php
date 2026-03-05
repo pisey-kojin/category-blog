@@ -172,18 +172,21 @@ class PostController extends Controller
 
         if ($like) {
             $like->delete();
+            $isLiked = false;
             $message = 'いいねを取り消しました';
         } else {
             $post->likes()->create(['user_id' => $user->id]);
+            $isLiked = true;
             $message = 'いいねしました';
         }
 
         // Ajaxリクエスト対応
         if (request()->ajax()) {
             return response()->json([
+                'success' => true,
                 'likes_count' => $post->likes()->count(),
                 'message' => $message,
-                'is_liked' => !$like // true＝良いねした、false＝いいね解除
+                'is_liked' => $isLiked // true＝良いねした、false＝いいね解除
             ]);
         }
 

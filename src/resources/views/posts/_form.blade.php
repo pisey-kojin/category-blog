@@ -9,9 +9,9 @@
     <label for="title" class="block text-sm font-medium text-gray-700">
         タイトル <span class="text-red-500">*</span>
     </label>
-    <input type="text" 
-            name="title" 
-            id="title" 
+    <input type="text"
+            name="title"
+            id="title"
             value="{{ old('title', $post->title ?? '') }}"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
     <x-error field="title" />
@@ -23,12 +23,12 @@
     <label for="category_id" class="block text-sm font-medium text-gray-700">
         カテゴリ <span class="text-red-500">*</span>
     </label>
-    <select name="category_id" 
+    <select name="category_id"
             id="category_id"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
         <option value="">選択してください</option>
         @foreach($categories as $category)
-            <option value="{{ $category->id }}" 
+            <option value="{{ $category->id }}"
                 {{ old('category_id', $post->category_id ?? '') == $category->id ? 'selected' : '' }}>
                 {{ $category->name }}
             </option>
@@ -42,7 +42,7 @@
     <label for="image" class="block text-sm font-medium text-gray-700">
         アイキャッチ画像
     </label>
-    
+
     <!-- 現在の画像表示（あれば） -->
     @isset($post->image_path)
         <div class="mt-2 p-3 bg-gray-50 rounded-md border border-gray-200">
@@ -55,11 +55,11 @@
                         現在の画像: {{ basename($post->image_path) }}
                     </span>
                 </div>
-                
+
                 <!-- 画像削除用チェックボックス -->
                 <label class="flex items-center space-x-1 text-sm text-red-600 hover:text-red-800 cursor-pointer">
-                    <input type="checkbox" 
-                            name="remove_image" 
+                    <input type="checkbox"
+                            name="remove_image"
                             value="1"
                             class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                     <span>削除</span>
@@ -70,8 +70,8 @@
 
     <!-- 新規画像アップロード -->
     <div class="mt-3">
-        <input type="file" 
-                name="image" 
+        <input type="file"
+                name="image"
                 id="image"
                 accept="image/jpeg,image/png,image/jpg,image/gif"
                 class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
@@ -88,21 +88,20 @@
     <label for="body" class="block text-sm font-medium text-gray-700">
         本文 <span class="text-red-500">*</span>
     </label>
-    <textarea name="body" 
-                id="body" 
+    <textarea name="body"
+                id="body"
                 rows="15"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('body', $post->body ?? '') }}
-    </textarea>
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('body', $post->body ?? '') }}</textarea>
     <x-error field="body" />
 </div>
 
 <!-- ボタン -->
 <div class="flex items-center gap-4">
-    <button type="submit" 
+    <button type="submit"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         {{ $submitButtonText ?? '投稿する' }}
     </button>
-    <a href="{{ $cancelUrl ?? route('route.index') }}" 
+    <a href="{{ $cancelUrl ?? route('route.index') }}"
         class="text-gray-600 hover:text-gray-900">
         キャンセル
     </a>
