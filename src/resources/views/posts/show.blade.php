@@ -2,7 +2,7 @@
 
 @section('header')
     <span class="text-xl font-bold px-2 py-1">
-        {{ $post->title }}
+        {{ $detail->title }}
     </span>
 @endsection
 
@@ -14,24 +14,24 @@
                 <!-- 記事ヘッダー情報 -->
                 <div class="mb-6">
                     <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                        <span>{{ $post->created_at->format('Y年m月d日') }}</span>
+                        <span>{{ $detail->formatedDate }}</span>
                         <span>•</span>
-                        <span>カテゴリ: {{ $post->category->name }}</span>
+                        <span>カテゴリ: {{ $detail->categoryName }}</span>
                         <span>•</span>
-                        <span>投稿者: {{ $post->user->name }}</span>
+                        <span>投稿者: {{ $detail->authorName }}</span>
                     </div>
 
                     <!-- いいねボタン -->
                     <div class="flex items-center gap-4">
-                        <x-like-button :post="$post" />
+                        <x-like-button :detail="$detail" />
 
-                        @can('update', $post)
+                        @if($detail->canEdit)
                             <div class="flex gap-2">
-                                <a href="{{ route('posts.edit', $post) }}" 
+                                <a href="{{ route('posts.edit', $post) }}"
                                    class="text-indigo-600 hover:text-indigo-900">
                                     編集
                                 </a>
-                                <form action="{{ route('posts.destroy', $post) }}" 
+                                <form action="{{ route('posts.destroy', $post) }}"
                                       method="POST"
                                       onsubmit="return confirm('この記事を削除しますか？');">
                                     @csrf
@@ -41,14 +41,14 @@
                                     </button>
                                 </form>
                             </div>
-                        @endcan
+                        @endif
                     </div>
                 </div>
 
                 <!-- アイキャッチ画像 -->
                 @if($post->image_path)
                     <div class="mb-8">
-                        <img src="{{ Storage::url($post->image_path) }}" 
+                        <img src="{{ Storage::url($post->image_path) }}"
                              alt="{{ $post->title }}"
                              class="w-full max-h-96 object-cover rounded-lg">
                     </div>
@@ -62,7 +62,7 @@
 
                 <!-- 戻るボタン -->
                 <div class="mt-8">
-                    <a href="{{ route('posts.index') }}" 
+                    <a href="{{ route('posts.index') }}"
                        class="text-blue-500 hover:underline">
                         ← 記事一覧に戻る
                     </a>
