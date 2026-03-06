@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Services\ImageUploadService;
 use App\Constants\PaginationConstants;
+use App\DTOs\SimplePostDetail;
 
 class PostController extends Controller
 {
@@ -94,7 +95,12 @@ class PostController extends Controller
         $post->load(['user', 'category', 'likes']);
         $post->loadCount('likes');
 
-        return view('posts.show', compact('post'));
+        $detail = new SimplePostDetail($post);
+
+        return view('posts.show', [
+            'post' => $post,
+            'detail' => $detail,
+        ]);
     }
 
     /**
